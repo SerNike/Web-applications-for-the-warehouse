@@ -12,7 +12,7 @@ import java.util.Map;
 @Repository
 public class StocksRepositoryImpl implements StocksRepository{
 
-    private HashMap<Socks, Integer> socksMap = new HashMap<>();
+    private Map<Socks, Integer> socksMap = new HashMap<>();
 
     @Override
     public void save(SocksBatch socksBatch) {
@@ -30,7 +30,7 @@ public class StocksRepositoryImpl implements StocksRepository{
         if (socksMap.containsKey(socks)) {
             int quantity = socksMap.get(socks);
             if (quantity > socksBatch.getQuantity()) {
-                socksMap.replace(socks, socksMap.get(socks) - socksBatch.getQuantity());
+                socksMap.replace(socks, quantity - socksBatch.getQuantity());
                 return socksBatch.getQuantity();
             } else {
                 socksMap.remove(socks);
@@ -42,7 +42,7 @@ public class StocksRepositoryImpl implements StocksRepository{
 
     @Override
     public Map<Socks, Integer> getAll() {
-        return null;
+        return socksMap;
     }
 
     @Override
@@ -51,9 +51,8 @@ public class StocksRepositoryImpl implements StocksRepository{
         for (Map.Entry<Socks, Integer> socksIntegerMap: socksMap.entrySet()) {
             socksBatchesList.add(new SocksBatch(socksIntegerMap.getKey(), socksIntegerMap.getValue()));
         }
-        return null;
+        return socksBatchesList;
     }
-
     @Override
     public void replace(List<SocksBatch> socksBatchList) {
         socksMap.clear();

@@ -6,3 +6,4 @@ import lombok.Data;
 public class ResponceDto {
     private final String message;
 }
+

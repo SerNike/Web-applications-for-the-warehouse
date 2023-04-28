@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skypro.courswork3.courswork3.service.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -13,11 +14,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.nio.file.StandardOpenOption.CREATE_NEW;
+
+@Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
 
     private final ObjectMapper objectMapper;
-    private OpenOption CREAT_NEW;
 @Override
     public <T> Path saveToFile(T content, Path path) throws IOException {
         String json = objectMapper.writeValueAsString(content);
@@ -44,7 +47,7 @@ public class FileServiceImpl implements FileService {
 
         try (
                 InputStream is = file.getInputStream();
-                OutputStream os = Files.newOutputStream(filePath, CREAT_NEW);
+                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
                 BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
                 BufferedInputStream bis = new BufferedInputStream(is, 1024);
         ) {
@@ -54,8 +57,5 @@ public class FileServiceImpl implements FileService {
     private void createNewFile(Path path) throws IOException {
         Files.deleteIfExists(path);
         Files.createFile(path);
-    }
-
-    private class CREAT_NEW {
     }
 }
